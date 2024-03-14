@@ -83,6 +83,7 @@ background: aqua !important
 
 .status {
   margin-bottom: 10px;
+  text-align: center;
 }
 .game {
   display: flex;
@@ -94,7 +95,7 @@ background: aqua !important
 }
 
 .toggle-button {
-  margin: 10px 10px;
+  margin: 13px 20px;
   padding: 5px 5px;
   background-color: #ddd;
   border: none;

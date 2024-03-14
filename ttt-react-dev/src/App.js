@@ -2,7 +2,6 @@ import { useState } from 'react';
 
 /*
  TODO
-  4) When no one wins, display a message about the result being a draw).
   5) Display the location for each move in the format (row, col) in the move history list.
 */
 
@@ -21,7 +20,7 @@ function Square({value, onSquareClick, winner}) {
 function Board({ xIsNext, squares, onPlay }) {
 
       function handleClick(i) {
-        const [a,b,c,winner]=calculateWinner(squares);
+        const [a,b,c,winner]=checkBoardState(squares);
         if (winner || squares[i]) {
           return;
         }
@@ -35,10 +34,13 @@ function Board({ xIsNext, squares, onPlay }) {
         }
 
 
-        const [coordinateA, coordinateB, coordinateC, winner] = calculateWinner(squares);
+        const [coordinateA, coordinateB, coordinateC, winner, draw] = checkBoardState(squares);
+
         let status;
         if (winner) {
            status = "Winner: " + winner;
+        } else if (draw) {
+           status = "Draw"
         } else {
           status = "Next player: " + (xIsNext ? "X" : "O");
         }
@@ -157,7 +159,14 @@ function ToggleButton({flipHistory}) {
   );
 }
 
-function calculateWinner(squares) {
+function checkBoardState(squares) {
+
+  //it's a draw
+  if (!squares.some(el => el === null)) {
+    return [null, null, null, null, true];
+  }
+
+  //Check for a winner
   const lines = [
     [0, 1, 2],
     [3, 4, 5],
@@ -171,11 +180,10 @@ function calculateWinner(squares) {
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return [a, b, c, squares[a]];
-//      debugger;
+      return [a, b, c, squares[a], null];
     }
   }
-//  debugger;
-  return [null, null, null, null];
+  //nothing going on
+  return [null, null, null, null, null];
 }
 
