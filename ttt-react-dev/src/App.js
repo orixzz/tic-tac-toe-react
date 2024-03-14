@@ -5,7 +5,6 @@ import { useState } from 'react';
   5) Display the location for each move in the format (row, col) in the move history list.
 */
 
-
 function Square({value, onSquareClick, winner}) {
     const className = winner
         ? "square winner"
@@ -30,7 +29,7 @@ function Board({ xIsNext, squares, onPlay }) {
         } else {
           nextSquares[i] = 'O';
         }
-        onPlay(nextSquares);
+        onPlay(nextSquares, i);
         }
 
 
@@ -75,14 +74,14 @@ function Board({ xIsNext, squares, onPlay }) {
 }
 
 export default function Game() {
-  const [history, setHistory] = useState([Array(9).fill(null)]);
+  const [history, setHistory] = useState([{squares: Array(9).fill(null), index: -1}]);
   const [currentMove, setCurrentMove] = useState(0);
-  const currentSquares = history[currentMove];
+  const currentSquares = history[currentMove].squares;
   const xIsNext = currentMove % 2 === 0;
   const [xHistoryFlipped, setHistoryFlipped] = useState(false);
 
-  function handlePlay(nextSquares) {
-      const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
+  function handlePlay(nextSquares, i) {
+      const nextHistory = [...history.slice(0, currentMove + 1), {squares: nextSquares, index: i}];
       setHistory(nextHistory);
       setCurrentMove(nextHistory.length - 1);
   }
@@ -95,17 +94,25 @@ export default function Game() {
       setHistoryFlipped(!xHistoryFlipped);
   }
 
-  const moves = history.map((squares, move) => {
+  const moves = history.map((turnInfo, move) => {
   let description;
   let max = history.length - 1;
   let atMax = move == max;
 
-  if (move == 0) {
+  if (max === 0) {
+       description = 'No moves yet';
+  } else if (move == 0) {
        description = 'Go to game start';
-  } else if (move < max) {
-       description = 'Go to move #' + move;
-  } else if (atMax) {
-       description = 'You are at move ' + move;
+  } else {
+       const row = Math.floor(turnInfo.index / 3) + 1;
+       const col = turnInfo.index % 3 + 1;
+       const symbol = turnInfo.index % 2 === 0 ? 'X' : 'O';
+
+       if (move < max) {
+            description = 'Go to move #' + move + ' - ' + symbol + '(' + row + ', ' + col + ')';
+       } else {
+            description = 'You are at move #' + move + ' - ' + symbol + '(' + row + ', ' + col + ')';
+       }
   }
 
   if (atMax) {
@@ -126,7 +133,7 @@ export default function Game() {
   });
 
   if (xHistoryFlipped) {
-    moves.reverse()
+    moves.slice().reverse()
   }
 
   return (
