@@ -2,7 +2,6 @@ import { useState } from 'react';
 
 /*
  TODO
-  2) Rewrite Board to use two loops to make the squares instead of hardcoding them.
   3) Add a toggle button that lets you sort the moves in either ascending or descending order.
   4) When someone wins, highlight the three squares that caused the win (and when no one wins, display a message about the result being a draw).
   5) Display the location for each move in the format (row, col) in the move history list.
@@ -32,6 +31,7 @@ function Board({ xIsNext, squares, onPlay }) {
     onPlay(nextSquares);
   }
 
+
   const winner = calculateWinner(squares);
         let status;
         if (winner) {
@@ -40,26 +40,27 @@ function Board({ xIsNext, squares, onPlay }) {
           status = "Next player: " + (xIsNext ? "X" : "O");
         }
 
-  return (
-    <>
-      <div className="status">{status}</div>
-      <div className="board-row">
-        <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
-        <Square value={squares[1]} onSquareClick={() => handleClick(1)} />
-        <Square value={squares[2]} onSquareClick={() => handleClick(2)} />
-      </div>
-      <div className="board-row">
-        <Square value={squares[3]} onSquareClick={() => handleClick(3)} />
-        <Square value={squares[4]} onSquareClick={() => handleClick(4)} />
-        <Square value={squares[5]} onSquareClick={() => handleClick(5)} />
-      </div>
-      <div className="board-row">
-        <Square value={squares[6]} onSquareClick={() => handleClick(6)} />
-        <Square value={squares[7]} onSquareClick={() => handleClick(7)} />
-        <Square value={squares[8]} onSquareClick={() => handleClick(8)} />
-      </div>
-    </>
-  );
+
+    //RENDER GRID
+    const grid = [];
+    let k = 0; //key to avoid errors
+
+    for (let i = 0; i < 3; i++) {
+        const col = [];
+        for (let j = 0; j < 3; j++) {//push argument without {}, <>
+            col.push(<Square key={k++} value={squares[3*i+j]} onSquareClick={() => handleClick(3*i+j)} />);
+        }
+        grid.push(<div key={k} className="board-row">{col}</div>);
+    }
+
+    return (
+      <>
+        <div className="status">{status}</div>
+        <div>
+            {grid}
+        </div>
+      </>
+    );
 }
 
 export default function Game() {
