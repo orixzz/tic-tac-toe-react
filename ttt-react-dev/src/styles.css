@@ -71,6 +71,10 @@ body {
   width: 34px;
 }
 
+.square.winner {
+background: aqua !important
+}
+
 .board-row:after {
   clear: both;
   content: '';
@@ -100,12 +104,12 @@ body {
   transition: background-color 0.3s ease;
 }
 
-.toggle-button.on {
+.toggle-button.FIRST {
   background-color: #4CAF50;
   color: white;
 }
 
-.toggle-button.off {
-  background-color: #f44336;
+.toggle-button.LAST {
+  background-color: #fcba03;
   color: white;
 }
