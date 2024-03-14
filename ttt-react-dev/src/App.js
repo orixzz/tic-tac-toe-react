@@ -1,10 +1,5 @@
 import { useState } from 'react';
 
-/*
- TODO
-  5) Display the location for each move in the format (row, col) in the move history list.
-*/
-
 function Square({value, onSquareClick, winner}) {
     const className = winner
         ? "square winner"
