@@ -162,12 +162,6 @@ function ToggleButton({flipHistory}) {
 }
 
 function checkBoardState(squares) {
-
-  //it's a draw
-  if (!squares.some(el => el === null)) {
-    return [null, null, null, null, true];
-  }
-
   //Check for a winner
   const lines = [
     [0, 1, 2],
@@ -185,6 +179,12 @@ function checkBoardState(squares) {
       return [a, b, c, squares[a], null];
     }
   }
+
+  //it's a draw
+  if (!squares.some(el => el === null)) {
+    return [null, null, null, null, true];
+  }
+
   //nothing going on
   return [null, null, null, null, null];
 }
