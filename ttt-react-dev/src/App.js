@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+//good article on the extras https://seanaujong.medium.com/implementing-the-react-tic-tac-toe-challenges-ed57d7ae4f67
+
 function Square({ value, onSquareClick, winner }) {
     const className = winner
         ? "square winner"
