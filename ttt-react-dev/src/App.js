@@ -123,13 +123,8 @@ export default function Game() {
          </li>
         );
   }
-
-
   });
 
-  if (xHistoryFlipped) {
-    moves.slice().reverse()
-  }
 
   return (
     <div className="game">
@@ -137,7 +132,7 @@ export default function Game() {
         <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
       </div>
       <div className="game-info">
-        <ol>{moves}</ol>
+        <ol>{xHistoryFlipped? moves : moves.slice().reverse()}</ol>
       </div>
       <div className="history-toggle">
         <ToggleButton flipHistory={flipHistory} />
