@@ -68,6 +68,32 @@ function Board({ xIsNext, squares, onPlay }) {
             </div>
         </>
     );
+
+// Same thing using arrays
+//    const boardLength = 3
+//    const boardRows = [...Array(boardLength).keys()].map((row) => {
+//              const boardSquares = [...Array(boardLength).keys()].map((col) => {
+//                  const i = boardLength*row + col;
+//                  return (
+//                      <Square
+//                      key={i}
+//                      value={squares[i]}
+//                      onSquareClick={() => handleClick(i)}
+//                      />
+//                  )
+//              })
+//
+//              return (
+//                  <div key={row} className="board-row">{boardSquares}</div>
+//              )
+//     })
+//     // ...
+//     return (
+//        <>
+//            <div className="status">{status}</div>
+//                 {boardRows}
+//       </>
+//    );
 }
 
 export default function Game() {
