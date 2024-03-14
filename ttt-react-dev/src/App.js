@@ -2,7 +2,6 @@ import { useState } from 'react';
 
 /*
  TODO
-  3) Add a toggle button that lets you sort the moves in either ascending or descending order.
   4) When someone wins, highlight the three squares that caused the win (and when no one wins, display a message about the result being a draw).
   5) Display the location for each move in the format (row, col) in the move history list.
 */
@@ -68,6 +67,7 @@ export default function Game() {
   const [currentMove, setCurrentMove] = useState(0);
   const currentSquares = history[currentMove];
   const xIsNext = currentMove % 2 === 0;
+  const [xHistoryFlipped, setHistoryFlipped] = useState(false);
 
   function handlePlay(nextSquares) {
       const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
@@ -77,6 +77,10 @@ export default function Game() {
 
   function jumpTo(nextMove) {
       setCurrentMove(nextMove)
+  }
+
+  function flipHistory() {
+      setHistoryFlipped(!xHistoryFlipped);
   }
 
   const moves = history.map((squares, move) => {
@@ -109,6 +113,10 @@ export default function Game() {
 
   });
 
+  if (xHistoryFlipped) {
+    moves.reverse()
+  }
+
   return (
     <div className="game">
       <div className="game-board">
@@ -117,7 +125,25 @@ export default function Game() {
       <div className="game-info">
         <ol>{moves}</ol>
       </div>
+      <div className="history-toggle">
+        <ToggleButton flipHistory={flipHistory} />
+      </div>
     </div>
+  );
+}
+
+function ToggleButton({flipHistory}) {
+  const [isToggled, setIsToggled] = useState(false);
+
+  const handleChange = () => {
+    setIsToggled(!isToggled);
+    flipHistory();
+  };
+
+  return (
+    <button onClick={handleChange} className={`toggle-button ${isToggled ? 'on' : 'off'}`}>
+      {isToggled ? 'RECENT LAST' : 'RECENT FIRST'}
+    </button>
   );
 }
 
