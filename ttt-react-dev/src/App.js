@@ -1,5 +1,14 @@
 import { useState } from 'react';
 
+/*
+ TODO
+  2) Rewrite Board to use two loops to make the squares instead of hardcoding them.
+  3) Add a toggle button that lets you sort the moves in either ascending or descending order.
+  4) When someone wins, highlight the three squares that caused the win (and when no one wins, display a message about the result being a draw).
+  5) Display the location for each move in the format (row, col) in the move history list.
+*/
+
+
 function Square({ value, onSquareClick }) {
   return (
     <button className="square" onClick={onSquareClick}>
@@ -71,16 +80,32 @@ export default function Game() {
 
   const moves = history.map((squares, move) => {
   let description;
-  if (move > 0) {
-     description = 'Go to move #' + move;
-  } else {
-     description = 'Go to game start';
+  let max = history.length - 1;
+  let atMax = move == max;
+
+  if (move == 0) {
+       description = 'Go to game start';
+  } else if (move < max) {
+       description = 'Go to move #' + move;
+  } else if (atMax) {
+       description = 'You are at move ' + move;
   }
-  return (
-   <li key={move}>
-     <button onClick={() => jumpTo(move)}>{description}</button>
-   </li>
-  );
+
+  if (atMax) {
+      return (
+         <li key={move}>
+           <span onClick={() => jumpTo(move)}>{description}</span>
+         </li>
+        );
+  } else {
+      return (
+         <li key={move}>
+           <button onClick={() => jumpTo(move)}>{description}</button>
+         </li>
+        );
+  }
+
+
   });
 
   return (
